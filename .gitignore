@@ -39,3 +39,19 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# ai
+.github/agents
+.github/prompts
+.github/skills
+.github/instructions
+.github/copilot-instructions.md
+prompts/*.md
+AGENTS.md
+AGENTS-*.md
+
+# large files
+*.csv
+
+# vscode
+.vscode/settings.json

@@ -1,0 +1,37 @@
+import type cytoscape from "cytoscape";
+
+export const DEFAULTS = {
+  name: "webgpu-cose",
+  cy: null as unknown as cytoscape.Core,
+  ready: () => {},
+  stop: () => {},
+  transform: (
+    _node: cytoscape.NodeSingular,
+    position: cytoscape.Position
+  ): cytoscape.Position => position,
+  animate: true,
+  animationEasing: undefined,
+  animationDuration: undefined,
+  animateFilter: () => true,
+  animationThreshold: 250,
+  refresh: 20,
+  fit: true,
+  padding: 30,
+  boundingBox: undefined,
+  avoidOverlap: true,
+  nodeDimensionsIncludeLabels: false,
+  spacingFactor: 1,
+  sort: () => 0,
+  randomize: false,
+  componentSpacing: 40,
+  nodeRepulsion: () => 2048,
+  nodeOverlap: 4,
+  idealEdgeLength: () => 32,
+  edgeElasticity: () => 32,
+  nestingFactor: 1.2,
+  gravity: 1,
+  numIter: 1000,
+  initialTemp: 1000,
+  coolingFactor: 0.99,
+  minTemp: 1.0,
+};
