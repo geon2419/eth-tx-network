@@ -51,7 +51,7 @@ AGENTS.md
 AGENTS-*.md
 
 # large files
-*.csv
+eth_transactions.csv
 
 # vscode
 .vscode/settings.json
