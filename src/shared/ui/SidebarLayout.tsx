@@ -55,6 +55,7 @@ type SidebarLayoutProps = {
 export function SidebarLayout({ children }: SidebarLayoutProps) {
   const [collapsed, setCollapsed] = useState(false);
   const [showOpenButton, setShowOpenButton] = useState(false);
+
   const pathname = usePathname();
   const openButtonTimerRef = useRef<number | null>(null);
 
@@ -138,15 +139,16 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
                       <div className="flex flex-col gap-2 pl-2">
                         {item.children.map((child) => {
                           const isActive = pathname === child.href;
+
                           return (
                             <Link
                               key={child.href}
                               href={child.href}
                               aria-current={isActive ? "page" : undefined}
-                              className={`rounded-2xl border border-transparent px-4 py-2.5 text-[12px] font-semibold transition ${
+                              className={`rounded-2xl px-4 py-2.5 text-[12px] font-semibold transition ${
                                 isActive
-                                  ? "border-cyan-400 bg-cyan-200/15 text-cyan-300"
-                                  : "text-zinc-100 hover:bg-zinc-800/50 hover:text-white"
+                                  ? "bg-cyan-200/15 text-cyan-300"
+                                  : "text-white hover:bg-cyan-200/15 hover:text-cyan-300"
                               }`}
                             >
                               {child.label}
@@ -157,23 +159,6 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
                     </div>
                   );
                 }
-
-                const isActive = pathname === item.href;
-
-                return (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    aria-current={isActive ? "page" : undefined}
-                    className={`rounded-2xl border border-transparent px-4 py-3 text-lg font-semibold transition ${
-                      isActive
-                        ? "border-cyan-400 bg-cyan-500/15 text-cyan-300"
-                        : "text-zinc-300 hover:bg-zinc-800/60 hover:text-white"
-                    }`}
-                  >
-                    {item.label}
-                  </Link>
-                );
               })}
             </nav>
           </>

@@ -7,7 +7,7 @@ import {
   GraphLayoutPageSkeleton,
 } from "@/features/cytoscape/cose/components";
 
-export const dynamic = "force-dynamic";
+// export const dynamic = "force-dynamic";
 
 export default function CoseBilkentPage() {
   return (

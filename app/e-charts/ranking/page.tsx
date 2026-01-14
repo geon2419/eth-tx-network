@@ -9,7 +9,7 @@ import {
 
 export const dynamic = "force-dynamic";
 
-export default function EChartsPage() {
+export default function RankingPage() {
   return (
     <div className="min-h-screen text-foreground">
       <div className="mx-auto flex min-h-screen w-full max-w-400 flex-col gap-8 px-4 py-10 sm:px-6 xl:px-10">

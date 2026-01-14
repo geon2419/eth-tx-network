@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import Script from "next/script";
 
 import { SidebarLayout, ErrorBoundary } from "@/shared/ui";
 
@@ -28,7 +29,7 @@ const pretendard = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Ethereum Address Transaction Network",
+  title: "Ethereum Transaction Network",
   description: "Force-directed visualization of Ethereum address flows.",
 };
 
@@ -40,6 +41,23 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${pretendard.variable} antialiased`}>
+        {process.env.NODE_ENV === "production" && (
+          <>
+            <Script
+              src="https://www.googletagmanager.com/gtag/js?id=G-9XG0SSFGNG"
+              strategy="afterInteractive"
+            />
+            <Script id="google-analytics" strategy="afterInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', 'G-9XG0SSFGNG');
+              `}
+            </Script>
+          </>
+        )}
+
         <ErrorBoundary>
           <SidebarLayout>{children}</SidebarLayout>
         </ErrorBoundary>

@@ -70,13 +70,13 @@ export const BlockWindowControls = ({
       {delayedLoading ? (
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between">
-            <div className="h-4 w-32 animate-pulse rounded bg-gray-200" />
-            <div className="h-4 w-16 animate-pulse rounded bg-gray-200" />
+            <div className="h-3 w-32 animate-pulse rounded bg-gray-200" />
+            <div className="h-3 w-16 animate-pulse rounded bg-gray-200" />
           </div>
           <div className="h-6 w-full animate-pulse rounded-full bg-gray-200" />
           <div className="flex items-center justify-between">
-            <div className="h-4 w-20 animate-pulse rounded bg-gray-200" />
-            <div className="h-4 w-20 animate-pulse rounded bg-gray-200" />
+            <div className="h-3 w-20 animate-pulse rounded bg-gray-200" />
+            <div className="h-3 w-20 animate-pulse rounded bg-gray-200" />
           </div>
         </div>
       ) : (

@@ -21,9 +21,10 @@ export function resolveClientUrl(url: string): string {
 
   if (typeof window === "undefined") {
     const baseUrl =
-      process.env.NEXT_PUBLIC_BASE_URL || process.env.VERCEL_URL
+      process.env.NEXT_PUBLIC_BASE_URL ??
+      (process.env.VERCEL_URL
         ? `https://${process.env.VERCEL_URL}`
-        : "http://localhost:3000";
+        : "http://localhost:3000");
     return new URL(url, baseUrl).href;
   }
 

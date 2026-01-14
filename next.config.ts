@@ -1,5 +1,7 @@
 import type { NextConfig } from "next";
 
+const hasSourceMaps = process.env.SOURCE_MAPS === "true";
+
 const nextConfig: NextConfig = {
   turbopack: {
     rules: {
@@ -10,6 +12,7 @@ const nextConfig: NextConfig = {
     },
   },
   reactCompiler: true,
+  productionBrowserSourceMaps: hasSourceMaps,
 };
 
 export default nextConfig;

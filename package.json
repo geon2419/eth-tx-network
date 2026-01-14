@@ -1,11 +1,11 @@
 {
   "name": "eth-tx-network",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "bun --bun next dev",
     "build": "bun --bun next build",
-    "start": "bun --bun next start",
+    "preview": "bun --bun next start",
     "lint": "eslint"
   },
   "dependencies": {

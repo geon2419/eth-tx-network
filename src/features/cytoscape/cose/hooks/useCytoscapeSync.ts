@@ -1,11 +1,15 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Core } from "cytoscape";
 
+import {
+  performanceMark,
+  performanceMeasure,
+} from "@/shared/utils/performance";
 import type { GraphElements } from "../types";
 import type { UseCytoscapeLayoutResult } from "./useCytoscapeLayout";
 
 type UseCytoscapeSyncOptions = {
-  cyRef: React.MutableRefObject<Core | null>;
+  cyRef: React.RefObject<Core | null>;
   layoutOptions: UseCytoscapeLayoutResult;
   selectedAddress: string | null;
   applySelection: (cy: Core, address: string | null) => void;
@@ -59,9 +63,7 @@ export const useCytoscapeSync = ({
     selectedAddressRef.current = selectedAddress;
   }, [selectedAddress]);
 
-  // Keep useCallback: Cytoscape API calls are expensive with side effects.
-  // requestAnimationFrame cleanup logic is critical. Used as dependency in other hooks.
-  const triggerLayout = useCallback(() => {
+  const triggerLayout = () => {
     if (layoutFrameRef.current !== null) {
       cancelAnimationFrame(layoutFrameRef.current);
     }
@@ -81,29 +83,28 @@ export const useCytoscapeSync = ({
         applySelection(cy, selectedAddressRef.current);
       });
 
+      performanceMark("layout-start");
       layout.run();
+      performanceMark("layout-end");
+      performanceMeasure("layout-duration", "layout-start", "layout-end");
+
       layoutFrameRef.current = null;
     });
-  }, [cyRef, layoutOptions, applySelection]);
+  };
 
-  // Keep useCallback: Cytoscape DOM manipulation (cy.batch, cy.add) is expensive.
-  // External library API calls with side effects. Passed as prop to parent.
-  const syncElements = useCallback(
-    (elements: GraphElements) => {
-      if (!cyRef.current) return;
+  const syncElements = (elements: GraphElements) => {
+    if (!cyRef.current) return;
 
-      const cy = cyRef.current;
-      const elementList = buildElementList(elements);
+    const cy = cyRef.current;
+    const elementList = buildElementList(elements);
 
-      cy.batch(() => {
-        cy.elements().remove();
-        cy.add(elementList);
-      });
+    cy.batch(() => {
+      cy.elements().remove();
+      cy.add(elementList);
+    });
 
-      triggerLayout();
-    },
-    [cyRef, triggerLayout]
-  );
+    triggerLayout();
+  };
 
   useEffect(() => {
     if (!cyRef.current) return;
