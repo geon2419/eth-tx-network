@@ -5,19 +5,9 @@ import {
   type RefObject,
 } from "react";
 import cytoscape, { type Core } from "cytoscape";
-// @ts-expect-error error TS7016: Could not find a declaration file for module 'cytoscape-cose-bilkent'.
-import coseBilkent from "cytoscape-cose-bilkent";
-// @ts-expect-error error TS7016: Could not find a declaration file for module 'cytoscape-fcose'.
-import fcose from "cytoscape-fcose";
-
-import webgpuCoseLayout from "@/features/cytoscape/webgpu-cose/algorithms/cytoscapePlugin";
 
 import { useGraphInteraction } from "./useGraphInteraction";
 import type { UseCytoscapeLayoutResult } from "./useCytoscapeLayout";
-
-cytoscape.use(coseBilkent);
-cytoscape.use(fcose);
-cytoscape.use(webgpuCoseLayout);
 
 const STYLESHEET = [
   {
@@ -95,11 +85,12 @@ export type UseCytoscapeInstanceResult = {
 
 /**
  * Initializes a Cytoscape instance with layout plugins and event handlers.
+ * Waits for layout plugin to be ready before creating the instance.
  *
  * @example
  * ```ts
  * const { cyRef, containerRef } = useCytoscapeInstance({
- *   layoutOptions: { name: "cose", animate: false },
+ *   layoutOptions: { layoutOptions: {...}, isPluginReady: true },
  *   onSelectAddress: (addr) => console.log("Selected:", addr)
  * });
  * // <div ref={containerRef} /> renders the graph
@@ -120,12 +111,13 @@ export const useCytoscapeInstance = ({
 
   useEffect(() => {
     if (!containerRef.current) return;
+    if (!layoutOptions.isPluginReady) return; // Wait for plugin to load
 
     const cy = cytoscape({
       container: containerRef.current,
       elements: [],
       style: STYLESHEET,
-      layout: layoutOptions,
+      layout: layoutOptions.layoutOptions,
     });
 
     cyRef.current = cy;

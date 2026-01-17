@@ -1,11 +1,20 @@
 import { Suspense } from "react";
+import dynamic from "next/dynamic";
 
-import { PageIntro, ErrorBoundary } from "@/shared/ui";
+import { PageIntro } from "@/shared/ui/PageIntro";
+import { ErrorBoundary } from "@/shared/ui/ErrorBoundary";
 
-import {
-  GraphLayoutPage,
-  GraphLayoutPageSkeleton,
-} from "@/features/cytoscape/cose/components";
+import { GraphLayoutPageSkeleton } from "@/features/cytoscape/cose/components";
+
+const GraphLayoutPage = dynamic(
+  () =>
+    import("@/features/cytoscape/cose/components").then(
+      (m) => m.GraphLayoutPage,
+    ),
+  {
+    loading: () => <GraphLayoutPageSkeleton />,
+  },
+);
 
 // export const dynamic = "force-dynamic";
 

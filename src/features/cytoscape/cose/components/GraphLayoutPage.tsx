@@ -2,7 +2,9 @@
 
 import { useState } from "react";
 
-import { PanelHeader, BinaryToggle, StatRow } from "@/shared/ui";
+import { PanelHeader } from "@/shared/ui/PanelHeader";
+import { BinaryToggle } from "@/shared/ui/BinaryToggle";
+import { StatRow } from "@/shared/ui/StatRow";
 import { formatNumber } from "@/shared/utils/formatters";
 import {
   useBlockWindow,
@@ -65,7 +67,7 @@ export function GraphLayoutPage({ layoutType }: GraphLayoutPageProps) {
     {
       graphData,
       focusAddress,
-    }
+    },
   );
 
   const isProcessing = isLoadingData || isBuilding;
@@ -86,7 +88,7 @@ export function GraphLayoutPage({ layoutType }: GraphLayoutPageProps) {
   const topAddresses = useTopAddresses(addressStats, TOP_ADDRESSES);
   const addressInsight = useAddressInsights(
     filteredTransactions,
-    focus.resolvedSelectedAddress
+    focus.resolvedSelectedAddress,
   );
 
   return (

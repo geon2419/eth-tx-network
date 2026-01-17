@@ -1,6 +1,6 @@
 "use client";
 
-import { PanelHeader } from "@/shared/ui";
+import { PanelHeader } from "@/shared/ui/PanelHeader";
 import { useMinimumLoadingDelay } from "@/shared/hooks";
 import { formatAddress } from "../domain/formatters";
 import type { AddressStats } from "../types";

@@ -1,11 +1,18 @@
 import { Suspense } from "react";
+import dynamicImport from "next/dynamic";
 
-import { PageIntro, ErrorBoundary } from "@/shared/ui";
+import { PageIntro } from "@/shared/ui/PageIntro";
+import { ErrorBoundary } from "@/shared/ui/ErrorBoundary";
 
-import {
-  EChartsPage as RankingEChartsPage,
-  EChartsPageSkeleton,
-} from "@/features/e-charts/ranking/components";
+import { EChartsPageSkeleton } from "@/features/e-charts/ranking/components";
+
+const RankingEChartsPage = dynamicImport(
+  () =>
+    import("@/features/e-charts/ranking/components").then((m) => m.EChartsPage),
+  {
+    loading: () => <EChartsPageSkeleton />,
+  },
+);
 
 export const dynamic = "force-dynamic";
 

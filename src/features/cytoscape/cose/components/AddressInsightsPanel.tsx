@@ -1,7 +1,7 @@
 "use client";
 
 import { formatNumber } from "@/shared/utils/formatters";
-import { StatRow } from "@/shared/ui";
+import { StatRow } from "@/shared/ui/StatRow";
 
 import { formatAddress } from "../domain/formatters";
 import type { AddressInsight } from "../types";
@@ -13,7 +13,7 @@ type AddressInsightsPanelProps = {
 
 const renderList = (
   items: AddressInsight["inboundTop"],
-  emptyLabel: string
+  emptyLabel: string,
 ) => {
   if (!items.length) {
     return <p className="text-sm text-gray-500">{emptyLabel}</p>;

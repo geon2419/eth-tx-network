@@ -1,13 +1,12 @@
 import { Suspense } from "react";
 
-import { PageIntro, ErrorBoundary } from "@/shared/ui";
+import { PageIntro } from "@/shared/ui/PageIntro";
+import { ErrorBoundary } from "@/shared/ui/ErrorBoundary";
 
 import {
   GraphLayoutPage,
   GraphLayoutPageSkeleton,
 } from "@/features/cytoscape/cose/components";
-
-// export const dynamic = "force-dynamic";
 
 export default function FcosePage() {
   return (

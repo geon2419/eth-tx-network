@@ -1,10 +1,26 @@
 "use client";
 
-import * as echarts from "echarts";
+import * as echarts from "echarts/core";
+import { BarChart } from "echarts/charts";
+import {
+  GridComponent,
+  TitleComponent,
+  TooltipComponent,
+} from "echarts/components";
+import { CanvasRenderer } from "echarts/renderers";
 import { useEffect, useRef, type RefObject } from "react";
 
 import type { Metric, TopItem } from "../domain/types";
 import { createBarOption } from "../domain/chartOptions";
+
+// Register only the components we need
+echarts.use([
+  BarChart,
+  GridComponent,
+  TitleComponent,
+  TooltipComponent,
+  CanvasRenderer,
+]);
 
 /**
  * Initializes and manages an ECharts bar chart instance with automatic resizing.
@@ -17,7 +33,7 @@ export const useEChartsBar = (
   containerRef: RefObject<HTMLDivElement | null>,
   title: string,
   items: TopItem[],
-  metric: Metric
+  metric: Metric,
 ) => {
   const chartRef = useRef<echarts.ECharts | null>(null);
 

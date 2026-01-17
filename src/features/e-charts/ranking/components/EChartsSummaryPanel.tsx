@@ -1,4 +1,5 @@
-import { PanelHeader, StatRow } from "@/shared/ui";
+import { PanelHeader } from "@/shared/ui/PanelHeader";
+import { StatRow } from "@/shared/ui/StatRow";
 
 type EChartsSummaryPanelProps = {
   totalAddresses: number;

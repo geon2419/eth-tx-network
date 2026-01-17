@@ -1,6 +1,6 @@
 "use client";
 
-import { PanelHeader } from "@/shared/ui";
+import { PanelHeader } from "@/shared/ui/PanelHeader";
 import { DATA_SOURCES } from "../domain/constants";
 
 type DataSourceControlsProps = {

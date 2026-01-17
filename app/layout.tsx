@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import Script from "next/script";
 
-import { SidebarLayout, ErrorBoundary } from "@/shared/ui";
+import { SidebarLayout } from "@/shared/ui/SidebarLayout";
+import { ErrorBoundary } from "@/shared/ui/ErrorBoundary";
 
 import "./globals.css";
 

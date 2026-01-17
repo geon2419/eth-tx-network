@@ -1,6 +1,10 @@
-import { PageIntro } from "@/shared/ui";
+import dynamic from "next/dynamic";
 
-import { RawCoseDemo } from "@/features/etc/raw-cose/components";
+import { PageIntro } from "@/shared/ui/PageIntro";
+
+const RawCoseDemo = dynamic(() =>
+  import("@/features/etc/raw-cose/components").then((m) => m.RawCoseDemo),
+);
 
 export default function RawCosePage() {
   return (

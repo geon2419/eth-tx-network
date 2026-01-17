@@ -1,4 +1,5 @@
-import { PanelHeader, BinaryToggle } from "@/shared/ui";
+import { PanelHeader } from "@/shared/ui/PanelHeader";
+import { BinaryToggle } from "@/shared/ui/BinaryToggle";
 import { usePendingValue } from "@/shared/hooks";
 
 import type { Metric } from "../domain/types";
@@ -25,7 +26,7 @@ export const EChartsControlsPanel = ({
     topN,
     MIN_TOP_N,
     MAX_TOP_N,
-    onTopNChange
+    onTopNChange,
   );
 
   return (

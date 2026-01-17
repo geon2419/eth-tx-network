@@ -1,6 +1,12 @@
-import { PageIntro } from "@/shared/ui";
+import dynamic from "next/dynamic";
 
-import { ForceDirectedDemo } from "@/features/etc/force-directed/components";
+import { PageIntro } from "@/shared/ui/PageIntro";
+
+const ForceDirectedDemo = dynamic(() =>
+  import("@/features/etc/force-directed/components").then(
+    (m) => m.ForceDirectedDemo,
+  ),
+);
 
 export default function ForceDirectedPage() {
   return (

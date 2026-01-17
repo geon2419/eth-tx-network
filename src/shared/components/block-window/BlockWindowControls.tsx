@@ -1,6 +1,6 @@
 "use client";
 
-import { PanelHeader } from "@/shared/ui";
+import { PanelHeader } from "@/shared/ui/PanelHeader";
 import { formatNumber } from "@/shared/utils/formatters";
 import { filterValidPresets, type BlockWindowPreset } from "./blockWindow";
 import { usePendingValue, useMinimumLoadingDelay } from "@/shared/hooks";
@@ -28,7 +28,7 @@ export const BlockWindowControls = ({
     value,
     min,
     max,
-    onChange
+    onChange,
   );
 
   const safePresets = filterValidPresets(presets, min, max);

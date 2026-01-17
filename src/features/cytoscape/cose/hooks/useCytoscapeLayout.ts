@@ -1,7 +1,8 @@
-import { useMemo } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { LayoutOptions } from "cytoscape";
 
 import { WEBGPU_COSE_REPULSION_SHADER } from "@/features/cytoscape/webgpu-cose/webgpu/repulsionShader";
+import { loadLayoutPlugin } from "../domain/layoutLoader";
 
 type LayoutName = "cose-bilkent" | "cose" | "fcose" | "webgpu-cose";
 type WebGpuLayoutMode = "cpu" | "gpu" | "fallback";
@@ -11,7 +12,10 @@ type UseCytoscapeLayoutOptions = {
   onLayoutMode?: (mode: WebGpuLayoutMode) => void;
 };
 
-export type UseCytoscapeLayoutResult = LayoutOptions;
+export type UseCytoscapeLayoutResult = {
+  layoutOptions: LayoutOptions;
+  isPluginReady: boolean;
+};
 
 /**
  * Builds Cytoscape layout options for the specified algorithm.
@@ -21,8 +25,8 @@ export type UseCytoscapeLayoutResult = LayoutOptions;
  */
 const buildLayoutOptions = (
   layoutName: LayoutName,
-  onLayoutMode?: (mode: WebGpuLayoutMode) => void
-): UseCytoscapeLayoutResult => {
+  onLayoutMode?: (mode: WebGpuLayoutMode) => void,
+): LayoutOptions => {
   const base: LayoutOptions = {
     name: layoutName,
     animate: false,
@@ -50,25 +54,48 @@ const buildLayoutOptions = (
 };
 
 /**
- * Generates memoized layout options for Cytoscape graph rendering.
+ * Generates layout options for Cytoscape graph rendering.
+ * Dynamically loads the layout plugin if needed to reduce initial bundle size.
  *
  * @example
  * ```ts
- * const layoutOptions = useCytoscapeLayout({
+ * const { layoutOptions, isPluginReady } = useCytoscapeLayout({
  *   layoutName: "webgpu-cose",
  *   onLayoutMode: (mode) => console.log("Layout mode:", mode)
  * });
+ * // Wait for isPluginReady before creating Cytoscape instance
  * ```
  *
  * @param options - Layout algorithm name and optional mode callback
- * @returns Cytoscape layout options object
+ * @returns Layout options object and plugin ready status
  */
 export const useCytoscapeLayout = ({
   layoutName,
   onLayoutMode,
 }: UseCytoscapeLayoutOptions): UseCytoscapeLayoutResult => {
-  return useMemo(
-    () => buildLayoutOptions(layoutName, onLayoutMode),
-    [layoutName, onLayoutMode]
-  );
+  const [isPluginReady, setIsPluginReady] = useState(false);
+  const pluginLoadedRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    // If layout changed, reset ready state and reload
+    if (pluginLoadedRef.current !== layoutName) {
+      pluginLoadedRef.current = layoutName;
+
+      loadLayoutPlugin(layoutName)
+        .then(() => {
+          setIsPluginReady(true);
+        })
+        .catch((error) => {
+          console.error(`Failed to load layout plugin "${layoutName}":`, error);
+          setIsPluginReady(true); // Allow proceeding even on error (may be built-in layout)
+        });
+    }
+  }, [layoutName]);
+
+  const layoutOptions = buildLayoutOptions(layoutName, onLayoutMode);
+
+  return {
+    layoutOptions,
+    isPluginReady,
+  };
 };

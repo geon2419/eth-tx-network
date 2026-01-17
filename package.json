@@ -6,7 +6,8 @@
     "dev": "bun --bun next dev",
     "build": "bun --bun next build",
     "preview": "bun --bun next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "analyze": "bun --bun next experimental-analyze"
   },
   "dependencies": {
     "comlink": "^4.4.2",
@@ -16,7 +17,6 @@
     "echarts": "^5.5.0",
     "next": "16.1.0",
     "papaparse": "^5.4.1",
-    "pixi.js": "^8.2.3",
     "react": "19.2.3",
     "react-dom": "19.2.3"
   },

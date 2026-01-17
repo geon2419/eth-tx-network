@@ -1,7 +1,8 @@
 "use client";
 
 import { formatNumber } from "@/shared/utils/formatters";
-import { PanelHeader, StatRow } from "@/shared/ui";
+import { PanelHeader } from "@/shared/ui/PanelHeader";
+import { StatRow } from "@/shared/ui/StatRow";
 
 import type { GraphStats } from "../types";
 

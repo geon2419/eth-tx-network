@@ -72,7 +72,7 @@ export const useCytoscapeSync = ({
       if (!cyRef.current) return;
       const cy = cyRef.current;
 
-      const layout = cy.layout(layoutOptions);
+      const layout = cy.layout(layoutOptions.layoutOptions);
 
       layout.on("layoutstart", () => {
         setIsLayouting(true);

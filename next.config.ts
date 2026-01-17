@@ -13,6 +13,9 @@ const nextConfig: NextConfig = {
   },
   reactCompiler: true,
   productionBrowserSourceMaps: hasSourceMaps,
+  experimental: {
+    optimizePackageImports: ["echarts"],
+  },
 };
 
 export default nextConfig;
