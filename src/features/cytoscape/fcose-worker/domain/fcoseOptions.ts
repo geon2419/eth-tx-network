@@ -10,14 +10,3 @@ import type { FcoseLayoutOptions } from "../types";
 export const DEFAULT_FCOSE_OPTIONS: FcoseLayoutOptions = {
   animate: false,
 };
-
-/**
- * Builds layout options with name for Cytoscape.
- * Used when applying pre-calculated positions to Cytoscape instance.
- */
-export const buildCytoscapeLayoutOptions = (
-  options: FcoseLayoutOptions = DEFAULT_FCOSE_OPTIONS,
-) => ({
-  name: "fcose" as const,
-  ...options,
-});
