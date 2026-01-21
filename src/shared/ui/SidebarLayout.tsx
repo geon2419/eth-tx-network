@@ -33,7 +33,7 @@ const NAV_ITEMS: NavItem[] = [
       { label: "CoSE with WebGPU", href: "/cytoscape/cose-webgpu" },
       { label: "CoSE-Bilkent", href: "/cytoscape/cose-bilkent" },
       { label: "FCoSE", href: "/cytoscape/fcose" },
-      { label: "FCoSE Worker", href: "/cytoscape/fcose-worker" },
+      { label: "FCoSE with Worker", href: "/cytoscape/fcose-worker" },
     ],
   },
   {
