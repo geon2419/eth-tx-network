@@ -149,32 +149,40 @@ export const usePresetCytoscapeInstance = ({
 
   // Apply positions from external source (e.g., Worker)
   useEffect(() => {
-    if (!cyRef.current || !positions) {
-      return;
-    }
+    const applyPositionsAndFit = () => {
+      if (!cyRef.current || !positions) {
+        return;
+      }
 
-    const cy = cyRef.current;
+      const cy = cyRef.current;
 
-    cy.batch(() => {
-      cy.nodes().forEach((node) => {
-        const pos: NodePosition | undefined = positions[node.id()];
-        if (pos) {
-          node.position(pos);
-        }
+      cy.batch(() => {
+        cy.nodes().forEach((node) => {
+          const pos: NodePosition | undefined = positions[node.id()];
+          if (pos) {
+            node.position(pos);
+          }
+        });
       });
-    });
 
-    cy.fit(undefined, fitPadding);
+      cy.fit(undefined, fitPadding);
+      applySelection(cy, selectedAddress);
+    };
 
-    applySelection(cy, selectedAddress);
-  }, [positions, applySelection, selectedAddress, fitPadding]);
+    applyPositionsAndFit();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [positions, applySelection, fitPadding]);
 
   useEffect(() => {
-    if (!cyRef.current) {
-      return;
-    }
+    const updateSelection = () => {
+      if (!cyRef.current) {
+        return;
+      }
 
-    applySelection(cyRef.current, selectedAddress);
+      applySelection(cyRef.current, selectedAddress);
+    };
+
+    updateSelection();
   }, [applySelection, selectedAddress]);
 
   return {
