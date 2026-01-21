@@ -16,7 +16,6 @@ export async function loadLayoutPlugin(layoutName: string): Promise<void> {
       break;
     }
     case "fcose": {
-      // @ts-expect-error - No type definitions available for cytoscape-fcose
       const fcose = await import("cytoscape-fcose");
       cytoscape.use(fcose.default || fcose);
       break;
