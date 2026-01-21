@@ -8,8 +8,6 @@ export type FcoseNodeInput = {
   label?: string;
   x?: number;
   y?: number;
-  width?: number;
-  height?: number;
 };
 
 export type FcoseEdgeInput = {
