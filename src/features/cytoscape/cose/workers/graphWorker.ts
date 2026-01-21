@@ -12,17 +12,11 @@ import {
   type GraphData,
 } from "../domain/graphBuilder";
 
-/**
- * Result of parsing CSV text into transactions.
- */
 export type ParseResult = {
   transactions: Transaction[];
   datasetInfo: DatasetInfo;
 };
 
-/**
- * Input for building graph from transactions.
- */
 export type BuildGraphInput = {
   transactions: Transaction[];
   options: GraphBuildOptions;
@@ -72,7 +66,7 @@ const workerApi = {
    */
   parseAndBuildGraph(
     csvText: string,
-    options: GraphBuildOptions
+    options: GraphBuildOptions,
   ): { parseResult: ParseResult; graphData: GraphData } {
     const parseResult = this.parseTransactions(csvText);
     const graphData = buildGraph(parseResult.transactions, options);

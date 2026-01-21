@@ -30,7 +30,7 @@ const MAX_ADDRESSES = 700;
 const BLOCK_WINDOW_MIN = 1;
 
 type GraphLayoutPageProps = {
-  layoutType: "cose-bilkent" | "cose" | "fcose" | "webgpu-cose";
+  layoutType: "cose-bilkent" | "cose" | "fcose" | "cose-webgpu";
 };
 
 export function GraphLayoutPage({ layoutType }: GraphLayoutPageProps) {

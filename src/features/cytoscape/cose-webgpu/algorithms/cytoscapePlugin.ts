@@ -48,7 +48,7 @@ type WebGpuCoseLayoutOptions = CoseLayoutOptions & {
  */
 const resolveElements = (
   cy: cytoscape.Core,
-  options: WebGpuCoseLayoutOptions
+  options: WebGpuCoseLayoutOptions,
 ) => {
   const base = options.eles ? cy.collection(options.eles) : cy.elements();
   const nodes = base.nodes();
@@ -77,7 +77,7 @@ const resolveElements = (
 const buildRepulsionParams = (
   layoutInfo: LayoutInfo,
   options: ResolvedCoseLayoutOptions,
-  randomSeed: number
+  randomSeed: number,
 ): RepulsionParams => ({
   nodeCount: layoutInfo.layoutNodes.length,
   isCompound: layoutInfo.isCompound,
@@ -181,7 +181,7 @@ class WebGpuCoseLayout {
     cy: cytoscape.Core,
     layoutInfo: LayoutInfo,
     options: ResolvedCoseLayoutOptions,
-    emitStart: boolean
+    emitStart: boolean,
   ) {
     await this.runLoop(cy, layoutInfo, options, emitStart, async () => {
       stepLayout(layoutInfo, options);
@@ -192,7 +192,7 @@ class WebGpuCoseLayout {
     cy: cytoscape.Core,
     layoutInfo: LayoutInfo,
     options: ResolvedCoseLayoutOptions,
-    emitStart: boolean
+    emitStart: boolean,
   ) {
     const shaderCode =
       this.options.gpuShaderCode ?? WEBGPU_COSE_REPULSION_SHADER;
@@ -251,7 +251,7 @@ class WebGpuCoseLayout {
     layoutInfo: LayoutInfo,
     options: ResolvedCoseLayoutOptions,
     emitStart: boolean,
-    step: () => Promise<void>
+    step: () => Promise<void>,
   ) {
     const startTime = performance.now();
 
@@ -347,7 +347,7 @@ class WebGpuCoseLayout {
 
 function WebGpuCoseLayoutConstructor(
   this: WebGpuCoseLayout,
-  options: WebGpuCoseLayoutOptions
+  options: WebGpuCoseLayoutOptions,
 ) {
   Object.assign(this, new WebGpuCoseLayout(options));
 }
@@ -364,11 +364,11 @@ WebGpuCoseLayoutConstructor.prototype = WebGpuCoseLayout.prototype;
  * import webgpuCoseLayout from './cytoscapePlugin';
  *
  * cytoscape.use(webgpuCoseLayout);
- * const cy = cytoscape({ elements, layout: { name: 'webgpu-cose' } });
+ * const cy = cytoscape({ elements, layout: { name: 'cose-webgpu' } });
  * ```
  */
 const webgpuCoseLayout = (cytoscape: CytoscapeType) => {
-  cytoscape("layout", "webgpu-cose", WebGpuCoseLayoutConstructor);
+  cytoscape("layout", "cose-webgpu", WebGpuCoseLayoutConstructor);
 };
 
 export default webgpuCoseLayout;

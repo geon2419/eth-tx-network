@@ -12,7 +12,7 @@ export type BoundingBox = {
 };
 
 export type CoseLayoutOptions = cytoscape.ShapedLayoutOptions & {
-  name: "webgpu-cose";
+  name: "cose-webgpu";
   cy: cytoscape.Core;
   eles?: cytoscape.CollectionArgument;
   ready?: () => void;
@@ -81,7 +81,7 @@ export type ResolvedCoseLayoutOptions = Required<
  */
 export const resolveLayoutOptions = (
   options: CoseLayoutOptions,
-  layout?: unknown
+  layout?: unknown,
 ): ResolvedCoseLayoutOptions => {
   return {
     ...DEFAULTS,
@@ -108,7 +108,7 @@ export const resolveLayoutOptions = (
  */
 export const makeBoundingBox = (
   boundingBox: cytoscape.BoundingBox12 | cytoscape.BoundingBoxWH | undefined,
-  cy: cytoscape.Core
+  cy: cytoscape.Core,
 ): BoundingBox => {
   if (boundingBox) {
     if ("w" in boundingBox && "h" in boundingBox) {

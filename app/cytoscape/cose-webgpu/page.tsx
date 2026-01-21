@@ -18,17 +18,14 @@ const GraphLayoutPage = dynamic(
 
 // export const dynamic = "force-dynamic";
 
-export default function WebGpuCosePage() {
+export default function CoseWebGpuPage() {
   return (
     <div className="min-h-screen text-foreground">
       <div className="mx-auto flex min-h-screen w-full max-w-400 flex-col gap-8 px-4 py-10 sm:px-6 xl:px-10">
-        <PageIntro
-          eyebrow="WebGPU COSE layout"
-          title="Address-to-address network"
-        />
+        <PageIntro eyebrow="COSE layout with WebGPU" title="" />
         <ErrorBoundary>
           <Suspense fallback={<GraphLayoutPageSkeleton />}>
-            <GraphLayoutPage layoutType="webgpu-cose" />
+            <GraphLayoutPage layoutType="cose-webgpu" />
           </Suspense>
         </ErrorBoundary>
       </div>

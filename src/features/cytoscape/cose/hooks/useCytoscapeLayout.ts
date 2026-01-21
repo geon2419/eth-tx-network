@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import type { LayoutOptions } from "cytoscape";
 
-import { WEBGPU_COSE_REPULSION_SHADER } from "@/features/cytoscape/webgpu-cose/webgpu/repulsionShader";
+import { WEBGPU_COSE_REPULSION_SHADER } from "@/features/cytoscape/cose-webgpu/webgpu/repulsionShader";
 import { loadLayoutPlugin } from "../domain/layoutLoader";
 
-type LayoutName = "cose-bilkent" | "cose" | "fcose" | "webgpu-cose";
+type LayoutName = "cose-bilkent" | "cose" | "fcose" | "cose-webgpu";
 type WebGpuLayoutMode = "cpu" | "gpu" | "fallback";
 
 type UseCytoscapeLayoutOptions = {
@@ -19,7 +19,7 @@ export type UseCytoscapeLayoutResult = {
 
 /**
  * Builds Cytoscape layout options for the specified algorithm.
- * @param layoutName - Name of layout algorithm (cose, fcose, cose-bilkent, webgpu-cose)
+ * @param layoutName - Name of layout algorithm (cose, fcose, cose-bilkent, cose-webgpu)
  * @param onLayoutMode - Callback for WebGPU layout mode detection (cpu/gpu/fallback)
  * @returns Complete layout configuration object
  */
@@ -34,10 +34,10 @@ const buildLayoutOptions = (
     padding: 40,
   };
 
-  if (layoutName === "webgpu-cose") {
+  if (layoutName === "cose-webgpu") {
     return {
       ...base,
-      // @ts-expect-error - webgpu-cose specific options not in base LayoutOptions
+      // @ts-expect-error - cose-webgpu specific options not in base LayoutOptions
       useWebGpu: true,
       gpuShaderCode: WEBGPU_COSE_REPULSION_SHADER,
       onLayoutMode,
@@ -60,7 +60,7 @@ const buildLayoutOptions = (
  * @example
  * ```ts
  * const { layoutOptions, isPluginReady } = useCytoscapeLayout({
- *   layoutName: "webgpu-cose",
+ *   layoutName: "cose-webgpu",
  *   onLayoutMode: (mode) => console.log("Layout mode:", mode)
  * });
  * // Wait for isPluginReady before creating Cytoscape instance

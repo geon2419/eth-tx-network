@@ -14,7 +14,7 @@ type GraphViewProps = {
   elements: GraphElements;
   selectedAddress: string | null;
   onSelectAddress: (address: string | null) => void;
-  layoutName?: "cose-bilkent" | "cose" | "fcose" | "webgpu-cose";
+  layoutName?: "cose-bilkent" | "cose" | "fcose" | "cose-webgpu";
   isProcessing?: boolean;
   isLayouting?: boolean;
 };
@@ -33,7 +33,7 @@ export const GraphView = ({
 
   const layoutOptions = useCytoscapeLayout({
     layoutName,
-    onLayoutMode: layoutName === "webgpu-cose" ? setLayoutMode : undefined,
+    onLayoutMode: layoutName === "cose-webgpu" ? setLayoutMode : undefined,
   });
 
   const { cyRef, containerRef } = useCytoscapeInstance({
@@ -63,7 +63,7 @@ export const GraphView = ({
   const elementCount = elements.nodes.length + elements.edges.length;
 
   useEffect(() => {
-    if (layoutName !== "webgpu-cose") return;
+    if (layoutName !== "cose-webgpu") return;
     const frameId = requestAnimationFrame(() => {
       setLayoutMode("idle");
     });
@@ -83,16 +83,16 @@ export const GraphView = ({
         ref={containerRef}
         className="h-full min-h-[60vh] w-full rounded-2xl bg-white"
       />
-      {layoutName === "webgpu-cose" && (
+      {layoutName === "cose-webgpu" && (
         <div
           className={`pointer-events-none absolute left-4 top-4 rounded-full border px-3 py-1 text-xs ${
             layoutMode === "gpu"
               ? "border-green-300 bg-green-50 text-green-700"
               : layoutMode === "cpu"
-              ? "border-yellow-300 bg-yellow-50 text-yellow-700"
-              : layoutMode === "fallback"
-              ? "border-orange-300 bg-orange-50 text-orange-700"
-              : "border-gray-200 bg-white text-gray-500"
+                ? "border-yellow-300 bg-yellow-50 text-yellow-700"
+                : layoutMode === "fallback"
+                  ? "border-orange-300 bg-orange-50 text-orange-700"
+                  : "border-gray-200 bg-white text-gray-500"
           }`}
         >
           WebGPU {layoutMode === "idle" ? "Idle" : layoutMode.toUpperCase()}

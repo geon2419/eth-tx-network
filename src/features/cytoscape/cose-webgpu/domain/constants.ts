@@ -1,13 +1,13 @@
 import type cytoscape from "cytoscape";
 
 export const DEFAULTS = {
-  name: "webgpu-cose",
+  name: "cose-webgpu",
   cy: null as unknown as cytoscape.Core,
   ready: () => {},
   stop: () => {},
   transform: (
     _node: cytoscape.NodeSingular,
-    position: cytoscape.Position
+    position: cytoscape.Position,
   ): cytoscape.Position => position,
   animate: true,
   animationEasing: undefined,

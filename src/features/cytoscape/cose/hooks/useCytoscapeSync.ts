@@ -34,18 +34,6 @@ const buildElementList = (elements: GraphElements) => [
  * Synchronizes graph elements with Cytoscape instance and manages layout updates.
  * Tracks layout calculation state for loading indicators.
  *
- * @example
- * ```ts
- * const { syncElements, isLayouting } = useCytoscapeSync({
- *   cyRef,
- *   layoutOptions,
- *   selectedAddress: "0xabc...",
- *   applySelection
- * });
- * syncElements({ nodes: [...], edges: [...] });
- * // isLayouting: true while Cytoscape calculates node positions
- * ```
- *
  * @param options - Cytoscape ref, layout config, selection state, and selection handler
  * @returns Object with syncElements function and isLayouting state
  */
@@ -93,7 +81,9 @@ export const useCytoscapeSync = ({
   };
 
   const syncElements = (elements: GraphElements) => {
-    if (!cyRef.current) return;
+    if (!cyRef.current) {
+      return;
+    }
 
     const cy = cyRef.current;
     const elementList = buildElementList(elements);
@@ -107,7 +97,10 @@ export const useCytoscapeSync = ({
   };
 
   useEffect(() => {
-    if (!cyRef.current) return;
+    if (!cyRef.current) {
+      return;
+    }
+
     applySelection(cyRef.current, selectedAddress);
   }, [applySelection, cyRef, selectedAddress]);
 

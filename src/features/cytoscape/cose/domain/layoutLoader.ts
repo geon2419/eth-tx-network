@@ -20,9 +20,9 @@ export async function loadLayoutPlugin(layoutName: string): Promise<void> {
       cytoscape.use(fcose.default || fcose);
       break;
     }
-    case "webgpu-cose": {
+    case "cose-webgpu": {
       const { default: webgpuCoseLayout } =
-        await import("@/features/cytoscape/webgpu-cose/algorithms/cytoscapePlugin");
+        await import("@/features/cytoscape/cose-webgpu/algorithms/cytoscapePlugin");
       cytoscape.use(webgpuCoseLayout);
       break;
     }
