@@ -3,6 +3,10 @@ import cytoscape from "cytoscape";
 
 import type { CoseLayoutInput, CoseLayoutOutput, NodePosition } from "../types";
 import { LAYOUT_STYLESHEET } from "../domain/constants";
+import {
+  performanceMark,
+  performanceMeasure,
+} from "@/shared/utils/performance";
 
 /**
  * Worker API for COSE layout calculations.
@@ -56,7 +60,14 @@ const workerApi = {
       animate: false,
     };
 
+    performanceMark("worker-layout-start");
     cy.layout(layoutOptions).run();
+    performanceMark("worker-layout-end");
+    performanceMeasure(
+      "worker-layout",
+      "worker-layout-start",
+      "worker-layout-end",
+    );
 
     const positions: Record<string, NodePosition> = {};
 

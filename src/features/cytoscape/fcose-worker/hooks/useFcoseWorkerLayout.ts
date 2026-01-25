@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState, useCallback, useMemo } from "react";
 import * as Comlink from "comlink";
 
 import type { FcoseWorkerApi } from "../workers/fcoseWorker";
@@ -51,6 +51,11 @@ export const useFcoseWorkerLayout = ({
 
   const optionsRef = useRef(options);
   optionsRef.current = options;
+
+  const elementsSignature = useMemo(
+    () => `${elements.nodes.length}-${elements.edges.length}`,
+    [elements.nodes.length, elements.edges.length],
+  );
 
   useEffect(() => {
     const worker = new Worker(
@@ -125,8 +130,12 @@ export const useFcoseWorkerLayout = ({
       return;
     }
 
-    calculateLayout(elements);
-  }, [elements, enabled, calculateLayout]);
+    const timeoutId = setTimeout(() => {
+      calculateLayout(elementsRef.current);
+    }, 50);
+
+    return () => clearTimeout(timeoutId);
+  }, [elementsSignature, enabled, calculateLayout]);
 
   const triggerLayout = () => {
     calculateLayout(elementsRef.current);
