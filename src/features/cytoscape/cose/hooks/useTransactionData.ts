@@ -5,6 +5,10 @@ import * as Comlink from "comlink";
 
 import { resolveClientUrl } from "@/shared/utils/clientFetch";
 import { datasetCache } from "@/shared/utils/cache";
+import {
+  performanceMark,
+  performanceMeasure,
+} from "@/shared/utils/performance";
 
 import type { GraphWorkerApi, ParseResult } from "../workers/graphWorker";
 import type { DatasetInfo } from "../domain/datasetAnalyzer";
@@ -64,7 +68,7 @@ export const useTransactionData = ({
   useEffect(() => {
     const worker = new Worker(
       new URL("../workers/graphWorker.ts", import.meta.url),
-      { type: "module" }
+      { type: "module" },
     );
     workerRef.current = worker;
     apiRef.current = Comlink.wrap<GraphWorkerApi>(worker);
@@ -94,19 +98,20 @@ export const useTransactionData = ({
 
         if (!parseResult) {
           const resolvedUrl = resolveClientUrl(dataSource);
-          const response = await fetch(resolvedUrl);
-
-          if (!response.ok) {
-            throw new Error(`Failed to load data (${response.status})`);
-          }
-
-          const csvText = await response.text();
 
           if (currentRequestId !== requestIdRef.current) {
             return;
           }
 
-          parseResult = await api.parseTransactions(csvText);
+          // Worker loads transactions directly (no main thread memory usage)
+          performanceMark("worker-load-transactions-start");
+          parseResult = await api.loadTransactions(resolvedUrl);
+          performanceMark("worker-load-transactions-end");
+          performanceMeasure(
+            "worker-load-transactions",
+            "worker-load-transactions-start",
+            "worker-load-transactions-end",
+          );
 
           datasetCache.set(cacheKey, parseResult);
         }

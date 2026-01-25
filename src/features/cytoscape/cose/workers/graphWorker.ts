@@ -23,13 +23,50 @@ export type BuildGraphInput = {
 };
 
 /**
- * Worker API exposed via Comlink.
- * Handles CPU-intensive CSV parsing and graph building off the main thread.
+ * Web Worker API for off-thread CSV parsing and graph building operations.
+ * Prevents UI blocking during heavy data processing tasks.
+ *
+ * @example
+ * ```ts
+ * import { wrap } from "comlink";
+ * const worker = new Worker(new URL("./graphWorker.ts", import.meta.url));
+ * const api = wrap<GraphWorkerApi>(worker);
+ *
+ * const { transactions, datasetInfo } = await api.loadTransactions("/data/eth_transactions.csv");
+ * ```
  */
 const workerApi = {
   /**
-   * Parses CSV text and returns transactions with dataset info.
-   * Runs off main thread to prevent UI blocking.
+   * Fetches and parses CSV transaction data from a remote URL.
+   * Handles network errors and HTTP status codes gracefully.
+   *
+   * @param dataSource - Absolute URL to CSV file (e.g., "/data/eth_transactions.csv")
+   * @returns Parsed transactions with normalized addresses and dataset statistics
+   */
+  async loadTransactions(dataSource: string): Promise<ParseResult> {
+    try {
+      const response = await fetch(dataSource);
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+
+      const csvText = await response.text();
+      return this.parseTransactions(csvText);
+    } catch (error) {
+      if (error instanceof TypeError) {
+        throw new Error(`Network error: ${error.message}`);
+      }
+      throw error;
+    }
+  },
+
+  /**
+   * Parses raw CSV text into structured transaction objects with normalized addresses.
+   * Filters out invalid rows and calculates dataset statistics. Runs off main thread to prevent UI blocking.
+   *
+   * @param csvText - Raw CSV string with headers (block_timestamp, from_address, to_address, value, block_number)
+   * @returns Parsed transactions with lowercase addresses and aggregated dataset metadata
    */
   parseTransactions(csvText: string): ParseResult {
     const rawData = parseTransactionCsv<RawTransaction>(csvText, {
@@ -53,24 +90,16 @@ const workerApi = {
   },
 
   /**
-   * Builds graph from transactions with given options.
-   * Runs off main thread to prevent UI blocking.
+   * Constructs Cytoscape-compatible graph data from transactions using specified filtering and focus options.
+   * Aggregates transactions into weighted edges and applies block window filtering. Runs off main thread to prevent UI blocking.
+   *
+   * @param input - Graph construction parameters
+   * @param input.transactions - Array of parsed transactions to convert into graph structure
+   * @param input.options - Filtering and focus configuration (block window, focus address, thresholds)
+   * @returns Graph data with nodes (addresses) and edges (aggregated transactions)
    */
   buildGraph(input: BuildGraphInput): GraphData {
     return buildGraph(input.transactions, input.options);
-  },
-
-  /**
-   * Combined operation: parse CSV and build graph in one call.
-   * More efficient than separate calls when both are needed.
-   */
-  parseAndBuildGraph(
-    csvText: string,
-    options: GraphBuildOptions,
-  ): { parseResult: ParseResult; graphData: GraphData } {
-    const parseResult = this.parseTransactions(csvText);
-    const graphData = buildGraph(parseResult.transactions, options);
-    return { parseResult, graphData };
   },
 };
 
