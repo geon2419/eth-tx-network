@@ -136,7 +136,6 @@ export const useCoseWorkerLayout = ({
 
     const timeoutId = setTimeout(() => {
       calculateLayout(elementsRef.current);
-      debugger;
     }, 50);
 
     return () => clearTimeout(timeoutId);
