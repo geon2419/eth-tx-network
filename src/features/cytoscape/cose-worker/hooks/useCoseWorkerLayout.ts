@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState, useCallback, useMemo } from "react";
 import * as Comlink from "comlink";
 
 import type { CoseWorkerApi } from "../workers/coseWorker";
@@ -51,6 +51,12 @@ export const useCoseWorkerLayout = ({
 
   const optionsRef = useRef(options);
   optionsRef.current = options;
+
+  // NOTE(ghlee): Memoize elements signature to prevent unnecessary recalculations
+  const elementsSignature = useMemo(
+    () => `${elements.nodes.length}-${elements.edges.length}`,
+    [elements.nodes.length, elements.edges.length],
+  );
 
   useEffect(() => {
     const worker = new Worker(
@@ -125,8 +131,12 @@ export const useCoseWorkerLayout = ({
       return;
     }
 
-    calculateLayout(elements);
-  }, [elements, enabled, calculateLayout]);
+    const timeoutId = setTimeout(() => {
+      calculateLayout(elementsRef.current);
+    }, 50);
+
+    return () => clearTimeout(timeoutId);
+  }, [elementsSignature, enabled, calculateLayout]);
 
   const triggerLayout = () => {
     calculateLayout(elementsRef.current);

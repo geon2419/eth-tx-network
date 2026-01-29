@@ -1,5 +1,7 @@
 "use client";
 
+import { useMemo } from "react";
+
 import { filterToOneHop } from "../domain/focus";
 import type { GraphData } from "../domain/graphBuilder";
 import type { GraphElements } from "../types";
@@ -52,7 +54,7 @@ export const useGraphFocus = ({
     !!focusAddress &&
     !!graphData?.addressStats.some((stat) => stat.address === focusAddress);
 
-  const focusedElements = () => {
+  const elements = useMemo(() => {
     if (!graphData) {
       return EMPTY_ELEMENTS;
     }
@@ -67,10 +69,10 @@ export const useGraphFocus = ({
       console.error("Failed to filter focused elements:", err);
       return graphData.elements;
     }
-  };
+  }, [graphData, hasFocusAddress, focusAddress]);
 
   return {
-    elements: focusedElements(),
+    elements,
     stats: graphData?.stats ?? EMPTY_STATS,
     addressStats: graphData?.addressStats ?? [],
     filteredTransactions: graphData?.filteredTransactions ?? [],

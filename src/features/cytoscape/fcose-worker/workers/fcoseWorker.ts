@@ -8,6 +8,10 @@ import type {
   NodePosition,
 } from "../types";
 import { LAYOUT_STYLESHEET } from "../domain/constants";
+import {
+  performanceMark,
+  performanceMeasure,
+} from "@/shared/utils/performance";
 
 cytoscape.use(fcose);
 
@@ -63,7 +67,14 @@ const workerApi = {
       animate: false,
     };
 
+    performanceMark("worker-layout-start");
     cy.layout(layoutOptions).run();
+    performanceMark("worker-layout-end");
+    performanceMeasure(
+      "worker-layout",
+      "worker-layout-start",
+      "worker-layout-end",
+    );
 
     const positions: Record<string, NodePosition> = {};
 
