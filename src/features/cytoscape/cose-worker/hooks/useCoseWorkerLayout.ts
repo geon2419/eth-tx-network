@@ -78,9 +78,6 @@ export const useCoseWorkerLayout = ({
       if (!apiRef.current) return;
 
       const currentRequestId = ++requestIdRef.current;
-      console.log(
-        `[COSE] calculateLayout called - requestId: ${currentRequestId}, nodes: ${currentElements.nodes.length}, edges: ${currentElements.edges.length}`,
-      );
 
       if (currentElements.nodes.length === 0) {
         setPositions(null);
